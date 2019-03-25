@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.329
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiniaPamieci", "LiniaPamieci\LiniaPamieci.csproj", "{F38B61C3-D12E-4814-B7DB-BEE5FF1FFF5D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F38B61C3-D12E-4814-B7DB-BEE5FF1FFF5D}.Debug|Any CPU.ActiveCfg = Release|Any CPU
+		{F38B61C3-D12E-4814-B7DB-BEE5FF1FFF5D}.Debug|Any CPU.Build.0 = Release|Any CPU
+		{F38B61C3-D12E-4814-B7DB-BEE5FF1FFF5D}.Debug|x64.ActiveCfg = Debug|x64
+		{F38B61C3-D12E-4814-B7DB-BEE5FF1FFF5D}.Debug|x64.Build.0 = Debug|x64
+		{F38B61C3-D12E-4814-B7DB-BEE5FF1FFF5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F38B61C3-D12E-4814-B7DB-BEE5FF1FFF5D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F38B61C3-D12E-4814-B7DB-BEE5FF1FFF5D}.Release|x64.ActiveCfg = Release|x64
+		{F38B61C3-D12E-4814-B7DB-BEE5FF1FFF5D}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E8DB0942-A4DF-4F0D-A790-ED01168B193E}
+	EndGlobalSection
+EndGlobal
