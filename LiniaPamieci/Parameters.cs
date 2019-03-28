@@ -8,9 +8,9 @@ namespace LiniaPamieci
 {
     class Parameters
     {
-        public int[] tab { get; set; }
+        unsafe public int* tab { get; set; }
         public int indeks { get; set; }
-        public Parameters(ref int[] tab, int indeks)
+        unsafe public Parameters(int * tab, int indeks)
         {
             this.tab = tab;
             this.indeks = indeks;

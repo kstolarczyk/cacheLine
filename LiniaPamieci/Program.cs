@@ -11,73 +11,63 @@ namespace LiniaPamieci
 {
     class Program
     {
-        private static Stopwatch watch;
-        private static void licz(object data)
+        unsafe private static void licz(object data)
         {
             Parameters p = (Parameters)data;
             
             for(int i = 0; i < 5000000; i++)
             {
-                p.tab[p.indeks] += 1;
+                p.tab[p.indeks] += 3;
             }
         }
-        private static int[] s_counter = new int[1024];
-        private static void UpdateCounter(object data)
-        {
-            Parameters p = (Parameters)data;
-            Stopwatch s = new Stopwatch();
-            s.Start();
-
-            for (int j = 0; j < 100000000; j++)
-            {
-                s_counter[p.indeks] = s_counter[p.indeks] + 3;
-            }
-
-            s.Stop();
-            Console.WriteLine("Thread{0} time: {1}ms", Thread.CurrentThread.ManagedThreadId, s.ElapsedMilliseconds);
-        }
-        static void Main(string[] args)
+       
+        unsafe static void Main(string[] args)
         {
             Stopwatch watch = new Stopwatch();
-            int first = 8;
-            int second = 24;
-            int third = 40;
-            int last = 56;
-            Parameters param1 = new Parameters(ref s_counter, first);
-            Parameters param2 = new Parameters(ref s_counter, second);
-            Parameters param3 = new Parameters(ref s_counter, third);
-            Parameters param4 = new Parameters(ref s_counter, last);
-            double avg = 0;
-            for (int i = 0; i < 3; i++)
+            int* tab = (int*)Marshal.AllocHGlobal(sizeof(int) * 256);
+            int maxHopes = 32;
+            int cacheLineSize = sizeof(int)*maxHopes;
+            double currentSum = 0;
+            int counter = 0;
+            Console.WriteLine("Sizeof element: {0} bytes, sizeof pointer: {1} bytes", sizeof(int), sizeof(int*));
+            for (int i = 0; i < maxHopes; i++)
             {
-                Thread thread1 = new Thread(new ParameterizedThreadStart(UpdateCounter));
-                Thread thread2 = new Thread(new ParameterizedThreadStart(UpdateCounter));
-                Thread thread3 = new Thread(new ParameterizedThreadStart(UpdateCounter));
-                Thread thread4 = new Thread(new ParameterizedThreadStart(UpdateCounter));
-                watch.Start();
-                thread1.Start(param1);
-                thread2.Start(param2);
-                thread3.Start(param3);
-                thread4.Start(param4);
-                thread1.Join();
-                thread2.Join();
-                thread3.Join();
-                thread4.Join();
-                watch.Stop();
-                avg += watch.ElapsedMilliseconds;
-                s_counter[first] = 0;
-                s_counter[second] = 0;
-                s_counter[third] = 0;
-                s_counter[last] = 0;
-                watch.Reset();
+                double currentAvg = currentSum / (i>0 ? i : 1);
+                Parameters p1 = new Parameters(tab, i);
+                Parameters p2 = new Parameters(tab, i + 1);
+                double avg = 0;
+                for(int k = 0; k < 10; k++)
+                {
+                    Thread t1 = new Thread(new ParameterizedThreadStart(licz));
+                    Thread t2 = new Thread(new ParameterizedThreadStart(licz));
+                    watch.Start();
+                    t1.Start(p1);
+                    t2.Start(p2);
+                    t1.Join();
+                    t2.Join();
+                    watch.Stop();
+                    tab[i] = 0;
+                    tab[i + 1] = 0;
+                    avg += watch.ElapsedMilliseconds;
+                    watch.Reset();
+                }
+                avg /= 10;
+                
+                if(i > 0 && Math.Abs(avg - currentAvg) > 0.5*currentAvg)
+                {
+                    counter++;
+                    currentSum += currentAvg;
+                }
+                else
+                {
+                    currentSum += avg;
+                }
+
+                int *p = &tab[i];
+                Console.WriteLine("Threads operate at indexes: {0} and {1} in average time: {2}ms, elements adresses: {3}, {4}", i, i + 1, avg, (int)p, (int)(p+1));
+                
             }
-            unsafe
-            {
-                Console.WriteLine("size of pointer: {0} bytes", sizeof(int*));
-                Console.WriteLine("size of int: {0} bytes", sizeof(int));
-            }
-            Console.WriteLine("Average time: {0}ms", avg / 3);
-            Console.WriteLine("Koniec");
+            Console.WriteLine("Cache line size is: {0} bytes", (cacheLineSize/counter));
             Console.ReadKey();
         }
     }
