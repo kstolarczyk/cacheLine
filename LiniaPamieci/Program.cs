@@ -51,7 +51,7 @@ namespace LiniaPamieci
                     watch.Reset();
                 }
                 avg /= 20;
-                if (i > 0 && Math.Abs(avg - currentAvg) > (0.4 * currentAvg))
+                if (i > 0 && (currentAvg - avg) > (0.4 * currentAvg))
                 {
                     counter++;
                     currentSum += currentAvg;
