@@ -62,7 +62,7 @@ namespace LiniaPamieci
                 }
 
                 int* p = &tab[i];
-                Console.WriteLine("Threads operate at indexes: {0} and {1} in average time: {2}ms\t|\telements adresses: {3}, {4}", i, i + 1, avg, (int)p, (int)(p + 1));
+                Console.WriteLine("Threads operate at indexes: {0} and {1} in average time: {2}ms\t|\telements adresses: {3}, {4}", i, i + 1, avg, (long)p, (long)(p + 1));
 
             }
             Marshal.FreeHGlobal((IntPtr)tab);
