@@ -37,6 +37,8 @@ namespace LiniaPamieci
                 {
                     Thread t1 = new Thread(new ParameterizedThreadStart(licz));
                     Thread t2 = new Thread(new ParameterizedThreadStart(licz));
+                    t1.Priority = ThreadPriority.Highest;
+                    t2.Priority = ThreadPriority.Highest;
                     watch.Start();
                     t1.Start(p1);
                     t2.Start(p2);
